@@ -1,5 +1,7 @@
 package com.example.fivecontacts.main.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -67,8 +69,33 @@ public class User implements Serializable {
         return contatos;
     }
 
+    public ArrayList<Contato> getContatosLike(String substring) {
+        substring = substring.toLowerCase();
+        ArrayList<Contato> contatosContidos = new ArrayList<Contato>();
+        for (int i=0; i < contatos.size(); i++) {
+            Contato contato = contatos.get(i);
+            if (contato.getNome().toLowerCase().contains(substring)) {
+                contatosContidos.add(contato);
+            };
+        }
+        return contatosContidos;
+    };
+
     public void setContatos(ArrayList<Contato> contatos) {
         this.contatos = contatos;
     }
+    public void removeContact(Contato contato) {
+        int index= -1;
+        loop:
+        for (int i = 0; i<contatos.size(); i++) {
+            if (contato.sameContact(contatos.get(i))) {
+                index = i;
+                break loop;
+            }
+        }
+        if (index != -1) {
+            contatos.remove(index);
+        }
 
+    }
 }

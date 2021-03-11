@@ -6,9 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -37,9 +35,10 @@ import java.util.ArrayList;
 
 public class AlterarContatos_Activity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    Boolean primeiraVezUser=true;
-    EditText edtNome;
-    ListView lv;
+    Boolean firstTimeRemoveSearch=true;
+    Boolean firstTimeAddSearch=true;
+    EditText edtNome, edtNomeRemover;
+    ListView lv, lr;
     BottomNavigationView bnv;
     User user;
 
@@ -48,6 +47,7 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_contatos);
         edtNome = findViewById(R.id.edtBusca);
+        edtNomeRemover = findViewById(R.id.edtBuscaRemover);
         bnv = findViewById(R.id.bnv);
         bnv.setOnNavigationItemSelectedListener(this);
         bnv.setSelectedItemId(R.id.anvMudar);
@@ -62,14 +62,26 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
                 setTitle("Alterar Contatos de Emergência");
             }
         }
-        lv = findViewById(R.id.listContatosDoCell);
+        lv = findViewById(R.id.cellphoneContacts);
+        lr = findViewById(R.id.appContacts);
         //Evento de limpar Componente
         edtNome.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (primeiraVezUser){
-                    primeiraVezUser=false;
+                if (firstTimeAddSearch){
+                    firstTimeAddSearch=false;
                     edtNome.setText("");
+                }
+
+                return false;
+            }
+        });
+        edtNomeRemover.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (firstTimeRemoveSearch){
+                    firstTimeRemoveSearch=false;
+                    edtNomeRemover.setText("");
                 }
 
                 return false;
@@ -99,6 +111,32 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         user.getContatos().add(w);
     }
 
+    public void removeContact(Contato contato) {
+        SharedPreferences savedContacts =
+                getSharedPreferences("contatos",Activity.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = savedContacts.edit();
+        editor.clear();
+        user.removeContact(contato);
+        ArrayList<Contato> contatos = user.getContatos();
+
+        int num = 0;
+        try {
+            for (int i = 0; i < contatos.size(); i++){
+                ByteArrayOutputStream dt = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(dt);
+                oos.writeObject(contatos.get(i));
+                String contatoSerializado= dt.toString(StandardCharsets.ISO_8859_1.name());
+                editor.putString("contato"+(num+1), contatoSerializado);
+                editor.putInt("numContatos",num+1);
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        editor.apply();
+
+    }
 
     @Override
     protected void onStop() {
@@ -178,6 +216,44 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         }
     }
 
+
+
+    public void onClickBuscarRemover(View v){
+        final ArrayList<Contato> contatos = user.getContatosLike(edtNomeRemover.getText().toString());
+        int totalContatos = contatos.size();
+
+        final String[] nomesContatos = new String[totalContatos];
+        for (int i = 0; i< totalContatos; i++) {
+            nomesContatos[i]=contatos.get(i).getNome();
+        }
+
+        if (totalContatos != 0) {
+            for(int i=0; i<=totalContatos; i++) {
+                ArrayAdapter<String> adaptador;
+                adaptador = new ArrayAdapter<String>(this, R.layout.list_view_layout, nomesContatos);
+                lr.setAdapter(adaptador);
+                lr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Contato c= new Contato();
+                        c.setNome(nomesContatos[i]);
+                        c.setNumero(contatos.get(i).getNumero());
+                        removeContact(c);
+                        Toast.makeText(getApplicationContext(), "Contato removido!", Toast.LENGTH_LONG)
+                                .show();
+                        Intent intent = new Intent(getApplicationContext(), ListaDeContatos_Activity.class);
+                        intent.putExtra("usuario", user);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                });
+            }
+        }
+    }
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Checagem de o Item selecionado é o do perfil
@@ -198,6 +274,7 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         }
         return true;
     }
+
 
     public boolean duplicatedContact (Contato contato, User user) {
         final ArrayList<Contato> contatos = user.getContatos();

@@ -8,15 +8,13 @@
     tools:context=".main.activities.AlterarContatos_Activity">
 
     <LinearLayout
-        android:id="@+id/layoutH"
+        android:id="@+id/layoutAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:background="#88C6FAFC"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="20dp">
 
         <ImageView
             android:id="@+id/buscarImg"
@@ -44,7 +42,66 @@
             android:textColor="#FFFFFF"
             android:textSize="18dp"
             android:textStyle="bold" />
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutRemove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="208dp"
+        android:background="#88C6FAFC"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/cellphoneContacts"
+        tools:layout_editor_absoluteX="0dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_action_buscar" />
+
+        <EditText
+            android:id="@+id/edtBuscaRemover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Remover Contatos "
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/buscarRemover"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorSecondary"
+            android:onClick="onClickBuscarRemover"
+            android:text="Buscar"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/cellphoneContacts"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#88FEE9E3"
+        android:divider="#FF5722"
+        android:dividerHeight="1dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        tools:layout_editor_absoluteX="16dp">
+
+    </ListView>
+
+    <ListView
+        android:id="@+id/appContacts"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#88FEE9E3"
+        android:divider="#FF5722"
+        app:layout_constraintTop_toBottomOf="@+id/layoutRemove" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv"
@@ -52,30 +109,17 @@
         android:layout_height="wrap_content"
         android:background="@color/menuBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/activity_main_bottom_actions" />
+        app:menu="@menu/activity_main_bottom_actions"
+        tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="35dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutH"
+        app:layout_constraintTop_toBottomOf="@+id/layoutAdd"
         app:srcCompat="@drawable/ic_action_mudarv2" />
-
-    <ListView
-        android:id="@+id/listContatosDoCell"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:background="#88FEE9E3"
-        android:divider="#FF5722"
-        android:dividerHeight="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
