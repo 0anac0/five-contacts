@@ -27,4 +27,9 @@ public class Contato implements Serializable, Comparable {
         Contato c2= (Contato)o;
         return this.getNome().compareTo(c2.getNome());
     }
+
+    public boolean sameContact(Contato contato){
+        return this.getNome().equals(contato.getNome()) &&
+                this.getNumero().equals(contato.getNumero());
+    }
 }

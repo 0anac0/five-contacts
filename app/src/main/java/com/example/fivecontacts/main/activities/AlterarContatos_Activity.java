@@ -6,7 +6,9 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.fivecontacts.R;
 import com.example.fivecontacts.main.model.Contato;
@@ -30,6 +33,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class AlterarContatos_Activity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -156,12 +160,17 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Contato c= new Contato();
                         c.setNome(nomesContatos[i]);
-                        c.setNumero("tel:+"+telefonesContatos[i]);
-                        salvarContato(c);
-                        Intent intent = new Intent(getApplicationContext(), ListaDeContatos_Activity.class);
-                        intent.putExtra("usuario", user);
-                        startActivity(intent);
-                        finish();
+                        c.setNumero("tel:"+telefonesContatos[i]);
+                        if (duplicatedContact(c, user)){
+                            Toast.makeText(getApplicationContext(), "Contato duplicado!", Toast.LENGTH_LONG)
+                                    .show();
+                        } else {
+                            salvarContato(c);
+                            Intent intent = new Intent(getApplicationContext(), ListaDeContatos_Activity.class);
+                            intent.putExtra("usuario", user);
+                            startActivity(intent);
+                            finish();
+                        }
 
                     }
                 });
@@ -189,4 +198,17 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         }
         return true;
     }
+
+    public boolean duplicatedContact (Contato contato, User user) {
+        final ArrayList<Contato> contatos = user.getContatos();
+        boolean duplicated = false;
+        loop:
+        for (int i = 0; i<contatos.size(); i++) {
+            if (contato.sameContact(contatos.get(i))) {
+                duplicated = true;
+                break loop;
+            }
+        }
+        return duplicated;
+    };
 }

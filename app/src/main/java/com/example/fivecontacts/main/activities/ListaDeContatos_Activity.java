@@ -151,14 +151,14 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
 
-                    if (checarPermissaoPhone_SMD(contatos.get(i).getNumero())) {
+                    if (!checarPermissaoPhone_SMD(contatos.get(i).getNumero())) {
 
                         Uri uri = Uri.parse(contatos.get(i).getNumero());
                          //  Intent itLigar = new Intent(Intent.ACTION_DIAL, uri);
                             Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
                         startActivity(itLigar);
                     } else {
-                        Call(view, contatos.get(i).getNumero().toString());
+                        Call(view, contatos.get(i).getNumero());
                     }
                 }
             });
@@ -346,7 +346,7 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
 
         // Use format with "tel:" and phoneNumber created is
         // stored in u.
-        Uri u = Uri.parse("tel:" + number);
+        Uri u = Uri.parse(number);
 
         // Create the intent and set the data for the
         // intent as the phone number.
