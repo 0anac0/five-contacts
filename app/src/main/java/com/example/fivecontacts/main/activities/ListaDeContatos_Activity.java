@@ -13,20 +13,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.view.View;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivecontacts.R;
@@ -44,13 +39,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class ListaDeContatos_Activity extends AppCompatActivity implements UIEducacionalPermissao.NoticeDialogListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     ListView lv;
     BottomNavigationView bnv;
     User user;
-
+    FloatingActionButton btnDial;
     String numeroCall;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +57,8 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
         bnv = findViewById(R.id.bnv);
         bnv.setOnNavigationItemSelectedListener(this);
         bnv.setSelectedItemId(R.id.anvLigar);
-
         lv = findViewById(R.id.listView1);
+        btnDial = (FloatingActionButton) findViewById(R.id.btnDial);
 
         //Dados da Intent Anterior
         Intent quemChamou = this.getIntent();
@@ -78,7 +75,14 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
             }
         }
 
-    }
+        btnDial.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Call(view, "");
+            }
+        });
+
+    };
+
 
     protected void atualizarListaDeContatos(User user){
         SharedPreferences recuperarContatos = getSharedPreferences("contatos", Activity.MODE_PRIVATE);
@@ -153,9 +157,9 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
                          //  Intent itLigar = new Intent(Intent.ACTION_DIAL, uri);
                             Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
                         startActivity(itLigar);
+                    } else {
+                        Call(view, contatos.get(i).getNumero().toString());
                     }
-
-
                 }
             });
 
@@ -334,6 +338,30 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
         }
 
 
+    }
+
+    public  void Call(View v, String number) {
+        Toast.makeText(this, "dialing", Toast.LENGTH_LONG)
+                .show();
+
+        // Use format with "tel:" and phoneNumber created is
+        // stored in u.
+        Uri u = Uri.parse("tel:" + number);
+
+        // Create the intent and set the data for the
+        // intent as the phone number.
+        Intent i = new Intent(Intent.ACTION_DIAL, u);
+
+        try {
+            // Launch the Phone app's dialer with a phone
+            // number to dial a call.
+            startActivity(i);
+        } catch (SecurityException s) {
+            // show() method display the toast with
+            // exception message.
+            Toast.makeText(this, "An error occurred", Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
 
