@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
+    android:background="@color/background"
     tools:context=".main.activities.ChecagemLogin_Activity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +14,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="15dp"
-        android:background="#88FCD3C6"
+        android:background="#88C6FAFC"
         android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -29,7 +30,7 @@
             android:inputType="textPersonName"
             android:text="Bem vindo"
             android:textAlignment="center"
-            android:textColor="#FF5722"
+            android:textColor="@color/colorSecondary"
             android:textColorLink="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -79,7 +80,7 @@
             android:layout_width="271dp"
             android:layout_height="55dp"
             android:layout_marginTop="24dp"
-            android:background="#FF5722"
+            android:background="@color/colorSecondary"
             android:text="Entrar"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
@@ -93,9 +94,9 @@
             android:id="@+id/btNovo"
             android:layout_width="126dp"
             android:layout_height="49dp"
-            android:background="#55FCD3C6"
+            android:background="#8097101B"
             android:text="Novo"
-            android:textColor="#FF5722"
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tvEsqueceuSenha"
             app:layout_constraintStart_toStartOf="@+id/btLogar" />
@@ -111,8 +112,8 @@
             android:linksClickable="false"
             android:selectAllOnFocus="false"
             android:text="Esqueceu a senha?"
-            android:textColor="#FF5722"
-            android:textColorLink="#FF5700"
+            android:textColor="#ffffff"
+            android:textColorLink="#FFFFFF"
             app:layout_constraintStart_toEndOf="@+id/btNovo"
             app:layout_constraintTop_toBottomOf="@+id/btLogar" />
 

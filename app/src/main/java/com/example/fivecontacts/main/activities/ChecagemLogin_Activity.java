@@ -174,7 +174,6 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
         boolean temaEscuro=temUser.getBoolean("tema",false);
 
         user=new User(nomeSalvo,loginSalvo,senhaSalva,emailSalvo,manterLogado);
-        user.setTema_escuro(temaEscuro);
         return user;
     }
 
