@@ -77,7 +77,7 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
 
         btnDial.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Call(view, "");
+                call(view, "tel:");
             }
         });
 
@@ -158,7 +158,7 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
                             Intent itLigar = new Intent(Intent.ACTION_CALL, uri);
                         startActivity(itLigar);
                     } else {
-                        Call(view, contatos.get(i).getNumero());
+                        call(view, contatos.get(i).getNumero());
                     }
                 }
             });
@@ -340,7 +340,7 @@ public class ListaDeContatos_Activity extends AppCompatActivity implements UIEdu
 
     }
 
-    public  void Call(View v, String number) {
+    public  void call(View v, String number) {
         Toast.makeText(this, "dialing", Toast.LENGTH_LONG)
                 .show();
 

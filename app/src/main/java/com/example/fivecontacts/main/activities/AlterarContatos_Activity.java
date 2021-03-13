@@ -35,8 +35,6 @@ import java.util.ArrayList;
 
 public class AlterarContatos_Activity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    Boolean firstTimeRemoveSearch=true;
-    Boolean firstTimeAddSearch=true;
     EditText edtNome, edtNomeRemover;
     ListView lv, lr;
     BottomNavigationView bnv;
@@ -64,29 +62,7 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
         }
         lv = findViewById(R.id.cellphoneContacts);
         lr = findViewById(R.id.appContacts);
-        //Evento de limpar Componente
-        edtNome.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (firstTimeAddSearch){
-                    firstTimeAddSearch=false;
-                    edtNome.setText("");
-                }
 
-                return false;
-            }
-        });
-        edtNomeRemover.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (firstTimeRemoveSearch){
-                    firstTimeRemoveSearch=false;
-                    edtNomeRemover.setText("");
-                }
-
-                return false;
-            }
-        });
     }
 
     public void salvarContato (Contato w){
@@ -141,23 +117,19 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
     @Override
     protected void onStop() {
         super.onStop();
-        Log.v("PDM","Matando a Activity Lista de Contatos");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v("PDM","Matei a Activity Lista de Contatos");
     }
 
 
     public void onClickBuscar(View v){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED) {
-            Log.v("PDM", "Pedir permissão");
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 3333);
             return;
         }
-        Log.v("PDM", "Tenho permissão");
 
         ContentResolver cr = getContentResolver();
         String consulta = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?";
@@ -166,13 +138,11 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
                 consulta,argumentosConsulta, null);
         final String[] nomesContatos = new String[cursor.getCount()];
         final String[] telefonesContatos = new String[cursor.getCount()];
-        Log.v("PDM","Tamanho do cursor:"+cursor.getCount());
 
         int i=0;
         while (cursor.moveToNext()) {
             int indiceNome = cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
             String contatoNome = cursor.getString(indiceNome);
-            Log.v("PDM", "Contato " + i + ", Nome:" + contatoNome);
             nomesContatos[i]= contatoNome;
             int indiceContatoID = cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID);
             String contactID = cursor.getString(indiceContatoID);

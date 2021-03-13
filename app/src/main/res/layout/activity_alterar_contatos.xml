@@ -27,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Seus contatos"
             android:inputType="textPersonName"
-            android:text="Seus contatos?"
             android:textColor="#FFFFFF"
             android:textSize="20dp" />
 
@@ -66,8 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Remover Contatos "
             android:inputType="textPersonName"
-            android:text="Remover Contatos "
             android:textColor="#FFFFFF"
             android:textSize="20dp" />
 
